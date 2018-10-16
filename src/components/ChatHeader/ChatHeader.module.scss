@@ -1,0 +1,53 @@
+@import "../../scss/variables";
+
+.container {
+  background: $ts-blue;
+  color: #fff;
+  align-items: center;
+  display: flex;
+  height: 56px;
+  fill: white;
+  justify-content: center;
+  padding: 0 10px;
+  position:relative;
+}
+
+.fadeOut {
+  position: absolute;
+  margin: auto;
+  opacity: 0;
+  elevation: above;
+  animation: Out 2s linear;
+}
+
+@keyframes Out {
+  0%{
+    display:inline;
+    opacity: 1;
+  }
+
+  100%{
+    opacity: 0;
+  }
+}
+
+@keyframes In {
+  0%{
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  33%{
+    visibility: visible;
+    opacity: 0;
+  }
+
+  100%{
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  opacity: 1;
+  animation: In 3s linear;
+}
