@@ -4,7 +4,6 @@
     box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.15);
     overflow: hidden;
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    font-family: $chatFont;
+    width: 100%;
+    height: 100%;
 }

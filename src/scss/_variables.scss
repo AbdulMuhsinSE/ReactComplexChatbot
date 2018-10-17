@@ -1,4 +1,6 @@
-$ts-blue: rgba(70,182,234,1);
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Raleway');
+
+$ts-blue: rgb(32, 167, 230);
 
 $blackish: #2C3E50;
 $info: #63c2de;
@@ -7,4 +9,5 @@ $warning: #ffc107;
 
 $shadow: rgba(0,0,0,0.4);
 
-$chatFont: "'Open sans', sans-serif";
+$chatFont: "Raleway", sans-serif;
+$headerFont: "Open Sans", sans-serif;

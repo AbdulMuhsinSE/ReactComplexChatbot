@@ -9,7 +9,10 @@
   fill: white;
   justify-content: center;
   padding: 0 10px;
-  position:relative;
+  position: relative;
+  font-family: $headerFont;
+  font-size: 12pt;
+  font-weight: 500;
 }
 
 .fadeOut {

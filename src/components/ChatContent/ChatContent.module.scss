@@ -1,0 +1,105 @@
+@import "../../scss/variables";
+
+.container {
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-basis: 80%;
+  max-height: 80%;
+}
+
+.message-container {
+  display: flex;
+  width: 100%;
+  min-height: 54px;
+  flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+  align-items: center;
+}
+
+.user-message-container {
+  composes: message-container;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.bot-message-container {
+  composes: message-container;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.bubble {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  font-size: 10px;
+  max-width: 80%;
+  flex-basis: 80%;
+  overflow: hidden;
+  position: relative;
+  padding: 12px;
+  animation: cardIn .25s ease-in;
+}
+
+.userBubble {
+  composes: bubble;
+  background: $ts-blue;
+  color: white;
+  border-radius: 18px 0 0 18px;
+  transform-origin: bottom right;
+}
+
+.botBubble {
+  composes: bubble;
+  background: aliceblue;
+  color: $blackish;
+  border-radius: 0 18px 18px 0;
+  transform-origin: bottom left;
+}
+
+.user-first {
+  border-radius: 18px 18px 0 18px;
+}
+
+.user-last {
+  border-radius: 18px 0 18px 18px;
+}
+
+.bot-first {
+  border-radius: 18px 18px 18px 0;
+}
+
+.bot-last {
+  border-radius: 0 18px 18px 18px;
+}
+
+is-typing {
+
+}
+
+@keyframes cardIn {
+  0% {
+    //left: -100%;
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cardInL {
+  0% {
+    right: -100%;
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+    right: 0;
+  }
+}

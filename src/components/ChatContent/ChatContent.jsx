@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import styles from "./ChatContainer.module.scss";
+import styles from "./ChatContent.module.scss";
 
-class ChatContainer extends Component{
-
+class ChatContent extends Component {
     constructor(props) {
         super(props);
 
@@ -17,14 +16,28 @@ class ChatContainer extends Component{
         className: ""
     };
 
+    scrollToBottom() {
+        this.messagesEnd.scrollIntoView({behavior: "smooth"});
+    }
+
+    componentDidMount() {
+        this.scrollToBottom();
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
     render() {
         return(
             <div className={styles.container + " " + this.props.className} style={this.state.style}>
+                <div>
                 {this.props.children}
+                </div>
+                <div className={styles["is-typing"]} ref={(e) => this.messagesEnd = e}/>
             </div>
         );
     }
-
 }
 
-export default ChatContainer;
+export default ChatContent;
