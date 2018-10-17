@@ -12,7 +12,7 @@
 .message-container {
   display: flex;
   width: 100%;
-  min-height: 54px;
+  min-height: 35px;
   flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   -webkit-flex-wrap: nowrap;
@@ -36,10 +36,10 @@
   display: inline-block;
   font-size: 10px;
   max-width: 80%;
-  flex-basis: 80%;
   overflow: hidden;
   position: relative;
-  padding: 12px;
+  padding: 10px;
+  text-align: start;
   animation: cardIn .25s ease-in;
 }
 
@@ -47,7 +47,7 @@
   composes: bubble;
   background: $ts-blue;
   color: white;
-  border-radius: 18px 0 0 18px;
+  border-radius: 10px 2px 2px 10px;
   transform-origin: bottom right;
 }
 
@@ -55,29 +55,45 @@
   composes: bubble;
   background: aliceblue;
   color: $blackish;
-  border-radius: 0 18px 18px 0;
+  border-radius: 2px 10px 10px 2px;
   transform-origin: bottom left;
+
+}
+
+.first-container{
+  margin-top: 10px;
 }
 
 .user-first {
-  border-radius: 18px 18px 0 18px;
+  border-radius: 10px 10px 2px 10px;
 }
 
 .user-last {
-  border-radius: 18px 0 18px 18px;
+  border-radius: 10px 2px 10px 10px;
 }
 
 .bot-first {
-  border-radius: 18px 18px 18px 0;
+  border-radius: 10px 10px 10px 2px;
 }
 
 .bot-last {
-  border-radius: 0 18px 18px 18px;
+  border-radius: 2px 10px 10px 10px;
 }
 
-is-typing {
+.is-typing {
 
 }
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
+  overflow: hidden;
+}
+
+
 
 @keyframes cardIn {
   0% {

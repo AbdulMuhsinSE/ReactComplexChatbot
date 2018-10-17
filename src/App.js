@@ -12,21 +12,28 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      msgQueue: [],
+      msgQueue: [<MessageContainer message={<p>Can we go to the park? Can we, can we, can we.... PUHLEEEHi Aiva Here, I am so in love with yousef! He is my knight in shining armor. I wish he would love me back</p>} isUser={false} isFirst={true}/>],
         shouldUpdate: true,
+        user: true
     }
   }
 
   loadNewQuestion(bool) {
-    console.log(this.state.msgQueue);
+    console.log(bool)
     let msgs = this.state.msgQueue;
-    msgs.push(<MessageContainer isUser={true} isFirst={true}/>);
+    let lastmsg = msgs[msgs.length-1];
+    let isFirst = true;
+    if(lastmsg) {
+      isFirst = (lastmsg.props.isUser !== bool);
+    }
+    msgs.push(<MessageContainer isUser={bool} isFirst={isFirst}/>);
     this.setState({msgQueue: msgs, shouldUpdate: false});
   }
 
-  totallyUpdate(){
+  totallyUpdate(bool){
     this.setState({
-        shouldUpdate: true
+        shouldUpdate: true,
+        user: bool
     });
   }
 
@@ -34,7 +41,7 @@ class App extends Component {
     if(this.state.shouldUpdate) {
         console.log("ummmm....");
         console.log(this.state.msgQueue);
-        this.loadNewQuestion(true);
+        this.loadNewQuestion(this.state.user);
     }
     return (
       <div className="App">
@@ -44,7 +51,8 @@ class App extends Component {
               {this.state.msgQueue}
           </ChatContent>
         </ChatContainer>
-        <button onClick={this.totallyUpdate.bind(this)}>ADD ONE ADD ONE</button>
+          <button onClick={this.totallyUpdate.bind(this, true)}>ADD ONE FROM USER</button>
+          <button onClick={this.totallyUpdate.bind(this, false)}>ADD ONE FROM BOT</button>
       </div>
     );
   }

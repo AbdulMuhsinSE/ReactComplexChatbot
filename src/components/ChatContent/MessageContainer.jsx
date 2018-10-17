@@ -5,14 +5,15 @@ import Bubble from "./Bubble";
 class MessageContainer extends Component {
     constructor(props) {
         super(props);
-
+        let message = props.message ? props.message :"Your content goes here";
         this.state = {
-            avatarComponent: props.avatarComponent,
+            avatarComponent: props.isFirst ? props.avatarComponent : null,
             showAvatar: props.showAvatar,
             isUser: props.isUser,
-            messageComponent: props.messageComponent ? props.messageComponent : <Bubble isUser={props.isUser} isFirst={props.isFirst} showAvatar={props.showAvatar}/>,
+            messageComponent: props.messageComponent ? props.messageComponent : <Bubble isUser={props.isUser} message={message} isFirst={props.isFirst} showAvatar={props.showAvatar}/>,
             extraComponent: props.extra,
             containerClassName: props.isUser ? styles["user-message-container"] : styles["bot-message-container"],
+            firstContainerClassName:props.isFirst? styles["first-container"]: "",
             customContainerClass: props.className
         }
     }
@@ -20,18 +21,22 @@ class MessageContainer extends Component {
     static defaultProps = {
         className: "",
         extraComponent: null,
-        avatarComponent: null,
+        avatarComponent: <img style={{height: "100%", width:"100%"}} src={"/favicon.ico"} alt={"oops"}/>,
         showAvatar: false,
         isUser: true,
         isFirst: false,
-        isLast: false
+        isLast: false,
+        avatarHeight: "35px",
+        avatarWidth: "35px"
     };
 
     render() {
-        const components = [this.state.avatarComponent, this.state.messageComponent, this.state.extraComponent];
-
+        const components = [<div className={styles.avatar}>{this.state.avatarComponent}</div>, this.state.messageComponent, this.state.extraComponent];
+        if(this.state.isUser){
+            components.reverse();
+        }
         return(
-            <div className={this.state.containerClassName + this.state.customContainerClass}>
+            <div className={this.state.containerClassName +" "+ this.state.firstContainerClassName + " " + this.state.customContainerClass}>
                 {components.filter(Boolean)}
             </div>
         )
