@@ -13,7 +13,7 @@ class MessageContainer extends Component {
             messageComponent: props.messageComponent ? props.messageComponent : <Bubble isUser={props.isUser} message={message} isFirst={props.isFirst} showAvatar={props.showAvatar}/>,
             extraComponent: props.extra,
             containerClassName: props.isUser ? styles["user-message-container"] : styles["bot-message-container"],
-            firstContainerClassName:props.isFirst? styles["first-container"]: "",
+            firstContainerClassName:props.isFirst ? styles["first-container"]: "",
             customContainerClass: props.className
         }
     }
@@ -21,7 +21,7 @@ class MessageContainer extends Component {
     static defaultProps = {
         className: "",
         extraComponent: null,
-        avatarComponent: <img style={{height: "100%", width:"100%"}} src={"/favicon.ico"} alt={"oops"}/>,
+        avatarComponent: <img style={{height: "100%", width:"100%"}} src={"/favicon.ico"} alt={""}/>,
         showAvatar: false,
         isUser: true,
         isFirst: false,

@@ -5,7 +5,7 @@
   color: #fff;
   align-items: center;
   display: flex;
-  height: 56px;
+  height: 50px;
   fill: white;
   justify-content: center;
   padding: 0 10px;
@@ -13,6 +13,9 @@
   font-family: $headerFont;
   font-size: 12pt;
   font-weight: 500;
+  box-shadow: 0 1px 18px 0 rgba(0,0,0,0.2);
+  max-height: 54px;
+  flex-basis: 10%;
 }
 
 .fadeOut {

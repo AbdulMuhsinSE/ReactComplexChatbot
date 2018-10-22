@@ -6,17 +6,21 @@
   overflow-y: auto;
   overflow-x: hidden;
   flex-basis: 80%;
-  max-height: 80%;
+  flex-shrink: 8;
+  flex-grow: 10;
+  font-family: $chatFont;
 }
 
 .message-container {
   display: flex;
   width: 100%;
-  min-height: 35px;
   flex-wrap: nowrap;
   -ms-flex-wrap: nowrap;
   -webkit-flex-wrap: nowrap;
   align-items: center;
+  + .message-container {
+    margin-bottom: 3px;
+  }
 }
 
 .user-message-container {
@@ -34,13 +38,17 @@
 .bubble {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
   display: inline-block;
-  font-size: 10px;
-  max-width: 80%;
+  font-size: 12px;
+  max-width: 70%;
   overflow: hidden;
   position: relative;
-  padding: 10px;
+  padding: 5px 8px;
   text-align: start;
   animation: cardIn .25s ease-in;
+
+  > * {
+    margin: 0;
+  }
 }
 
 .userBubble {
@@ -57,7 +65,6 @@
   color: $blackish;
   border-radius: 2px 10px 10px 2px;
   transform-origin: bottom left;
-
 }
 
 .first-container{
@@ -85,15 +92,33 @@
 }
 
 .avatar {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: auto;
+  max-height: 30px;
   border-radius: 20px;
   margin-right: 5px;
   margin-left: 5px;
   overflow: hidden;
+
+  > * {
+    border-radius: 20px;
+  }
 }
 
+@media only screen and (max-width: 512px){
+  .avatar{
+    max-width: 30px;
+    max-height: 30px;
+    height: auto;
+    min-width: 30px;
+  }
 
+  .botBubble{
+    > * {
+      margin: 0;
+    }
+  }
+}
 
 @keyframes cardIn {
   0% {
