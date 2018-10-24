@@ -53,6 +53,13 @@ class Bubble extends Component {
         isLast: false
     };
 
+    static getDerivedStateFromProps(props, state) {
+        if(props.message && (state.message !== props.message)) {
+            return {message: props.message}
+        }
+        return {};
+    }
+
 
     render() {
         return (

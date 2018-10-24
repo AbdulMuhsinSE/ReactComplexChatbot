@@ -23,7 +23,11 @@ class ChatFooter extends Component {
     }
 
     previousNode(event) {
-        console.log(event.target);
+        if(this.props.redo) {
+            this.props.redo();
+            return;
+        }
+        alert("No redo event has been defined by the chatbot provider");
     }
 
     handleInput(event) {
