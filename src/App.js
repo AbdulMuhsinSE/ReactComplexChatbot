@@ -13,10 +13,9 @@ class App extends Component {
         super(props);
 
         this.state = {
-            msgQueue: [<MessageContainer key={0}
-                                         message={<p>Can we go to the park? Can we, can we, can we.... PUHLEEEHi Aiva
+            msgQueue: [{messageComponent:<p>Can we go to the park? Can we, can we, can we.... PUHLEEEHi Aiva
                                              Here, I am so in love with yousef! He is my knight in shining armor. I wish
-                                             he would love me back</p>} isUser={false} isFirst={true}/>],
+                                             he would love me back</p>, isUser: false, isFirst: true}],
             msgMap: new Map(),
             stepCounter: 0,
             parent: null,
@@ -44,28 +43,31 @@ class App extends Component {
 
 
         if (lastmsg) {
-            isFirst = (!lastmsg.props.isUser);
+            isFirst = (!lastmsg.isUser);
         }
 
         while (revCounter >= 0) {
-            if (lastmsg.props && !lastmsg.props.isUser) {
+            if (lastmsg && !lastmsg.isUser) {
                 parent = lastmsg;
                 break;
             }
             lastmsg = msgs[--revCounter];
         }
 
-        msgs.push(<MessageContainer key={msgs.length} message={message} isUser={true} isFirst={isFirst}
-                                    canEdit={canEdit}/>);
+        msgs.push({message: message, isUser:true, isFirst:isFirst, canEdit: canEdit, changeMessage: this.changeMessage.bind(this)});
 
         console.log(parent);
+
         this.setState({msgQueue: msgs, shouldUpdate: false, parent: parent});
         this.handleResponse(message);
     }
 
     changeMessage(message, index) {
         let msgQueue = this.state.msgQueue;
-        msgQueue[index].props.message = message;
+        msgQueue[index].message = message;
+        this.setState({
+            msgQueue: msgQueue
+        });
     }
 
     handleResponse(message) {
@@ -75,8 +77,6 @@ class App extends Component {
 
         time = (time > 750) ? ((time > 3000) ? 2000 : time) : 750;
         setTimeout(this.botRespond.bind(this, message), time);
-
-        console.log(this.state);
 
         this.setState({
             msgQueue: msgs
@@ -90,21 +90,26 @@ class App extends Component {
         let q_detected = true;
 
         if (lastmsg) {
-            isFirst = (lastmsg.props.isUser !== false);
+            isFirst = (lastmsg.isUser !== false);
         }
 
+        let resultObject = {isUser: false, isFirst: isFirst};
         let msg = this.generateBotResponse("q_detected", isFirst, message);
-        if (msg && msg.message && msg.message.then && typeof msg.message.then === "function") {
+
+        if(typeof message === "string") {
+            resultObject.message = msg;
+        } else if (msg && msg.message && msg.message.then && typeof msg.message.then === "function") {
             msg.message(message).then(result => {
-                msgs.push(<MessageContainer key={msgs.length} message={result} isUser={false} isFirst={isFirst}/>);
-                this.setState({msgQueue: msgs});
+                resultObject.message = result;
             }).catch(err => {
-                msgs.push(<MessageContainer key={msgs.length} message={err} isUser={false} isFirst={isFirst}/>);
-                this.setState({msgQueue: msgs});
+                resultObject.message = err;
             });
             return
+        } else {
+            resultObject.messageComponent = msg;
         }
-        msgs.push(msg);
+
+        msgs.push(resultObject);
 
         this.setState({
             msgQueue: msgs,
@@ -114,58 +119,54 @@ class App extends Component {
 
     generateBotResponse(key, isFirst, message) {
         let msgObject = this.state.msgMap.get(key);
-        let msgs = {};
-        msgs.length = this.state.msgQueue.length;
+        let finalMessage;
 
         if (msgObject) {
-            let userNext = msgObject.userNext;
-
             if (msgObject.message) {
                 let msgType = typeof msgObject.message;
                 if (msgType === "string") {
-                    return <MessageContainer key={msgs.length} message={msgObject.message} isUser={false}
-                                             isFirst={isFirst}/>
+                    finalMessage = msgObject.message;
                 } else if (msgType === "function") {
-                    let val = msgObject.message(message);
-                    console.log(msgObject.message);
-                    console.log(val);
-                    return <MessageContainer key={msgs.length} message={val} isUser={false} isFirst={isFirst}/>
+                    finalMessage = msgObject.message(message);
                 } else if (msgObject.message.then) {
+                    //needs extra processing
                     return msgObject.message;
                 }
-
-                return <MessageContainer key={msgs.length} message={"Oops, something wrong happened"} isUser={false}
-                                         isFirst={isFirst}/>
             } else {
-                return (<MessageContainer key={msgs.length} messageComponent={msgObject.messageComponent} isUser={false}
-                                          isFirst={isFirst}/>);
+                finalMessage = msgObject.messageComponent;
             }
         }
-        return <MessageContainer key={msgs.length}
-                                 message={"Oops, something wrong happened. Please inform the chatbot developer."}
-                                 isUser={false} isFirst={isFirst}/>
+
+        if(!finalMessage) {finalMessage = "Oops, something wrong happened. Please inform the dev team."}
+        return finalMessage;
     }
 
     redoLastBotInteraction() {
-        console.log(this.state.msgQueue);
         let msgs = this.state.msgQueue;
         const currIndex = msgs.length;
         if (this.state.parent) {
-            if (this.state.parent === msgs[msgs.length - 1]) msgs.push(<MessageContainer key={msgs.length}
-                                                                                         showAvatar={false}
-                                                                                         messageComponent={<div
-                                                                                             onClick={this.removeMsgAtPosition.bind(this, currIndex)}
-                                                                                             className={styles["alert-div-info"]}>
-                                                                                             <h5>The undo button allows
-                                                                                                 access to only a single
-                                                                                                 level above</h5>
-                                                                                         </div>}/>);
+            if (this.state.parent === msgs[msgs.length - 1]) {
+                msgs.push({
+                    showAvatar:false,
+                    isUser: true,
+                    messageComponent:
+                        <div onClick={this.removeMsgAtPosition.bind(this, currIndex)}
+                        className={styles["alert-div-info"]}>
+                            <h5>The undo button allows access to only a single level above</h5>
+                        </div>
+                });
+            }
             else msgs.push(this.state.parent);
         } else {
-            msgs.push(<MessageContainer key={msgs.length} showAvatar={false}
-                                        messageComponent={<div onClick={this.removeMsgAtPosition.bind(this, currIndex)}
-                                                               className={styles["alert-div-warning"]}><h5>Oops, access
-                                            to the previous bot interaction is denied or unavailable</h5></div>}/>);
+            msgs.push({
+                showAvatar:false,
+                isUser: true,
+                messageComponent:
+                    <div onClick={this.removeMsgAtPosition.bind(this, currIndex)}
+                         className={styles["alert-div-warning"]}>
+                        <h5>Oops, access to the previous bot interaction is denied or unavailable</h5>
+                    </div>
+            });
         }
 
         this.setState({
@@ -176,14 +177,9 @@ class App extends Component {
     removeMsgAtPosition(index) {
         let msgs = this.state.msgQueue;
 
-        console.log(index);
-        console.log(msgs[index]);
-
         if (index < msgs.length) {
-            msgs.splice(index, 1, "");
+            delete msgs[index];
         }
-
-        console.log(msgs[index]);
 
         this.setState({
             msgQueue: msgs
@@ -191,12 +187,18 @@ class App extends Component {
     }
 
     render() {
+        let messages = this.state.msgQueue.map((msgObject, index) => {
+            if(msgObject) {
+                msgObject.key = index;
+                return React.cloneElement(<MessageContainer index={index}/>, msgObject);
+            }
+        });
         return (
             <div className="App">
                 <ChatContainer>
                     <ChatHeader/>
                     <ChatContent>
-                        {this.state.msgQueue}
+                        {messages}
                     </ChatContent>
                     <ChatFooter captureUserInput={this.captureUserInput} redo={this.redoLastBotInteraction}/>
                 </ChatContainer>

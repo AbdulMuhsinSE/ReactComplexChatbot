@@ -26,19 +26,7 @@ class MessageContainer extends Component {
             index: props.index
         };
 
-        this.state.messageComponent = props.messageComponent ? props.messageComponent : <Bubble isUser={props.isUser} message={this.state.message} isFirst={props.isFirst} showAvatar={props.showAvatar}/>;
-
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        let newState = {};
-        if(props.message !== state.message) {
-            newState.message = props.message;
-            newState.messageComponent = <Bubble isUser={props.isUser} message={props.message} isFirst={props.isFirst} showAvatar={props.showAvatar}/>;
-
-            return newState;
-        }
-        return newState;
+        this.state.messageComponent = props.messageComponent ;
     }
 
     static defaultProps = {
@@ -52,19 +40,26 @@ class MessageContainer extends Component {
         avatarHeight: "35px",
         avatarWidth: "35px",
         canEdit: false,
-        key: 0
     };
 
+    static getDerivedStateFromProps(props, state) {
+        let newState ={};
+        if(props.message !== state.message) newState.message = props.message;
+        return newState;
+    }
+
     changeMessage(newMsg) {
-        console.log(this.props.key);
         if(this.props.changeMessage) {
-            this.props.changeMessage(newMsg, this.state.key);
+            this.props.changeMessage(newMsg,this.state.index);
         }
     }
 
     render() {
-
-        const components = [<div className={styles.avatar}>{this.state.avatarComponent}</div>, this.state.messageComponent, this.state.extraComponent];
+        const messageComponent = (!this.state.messageComponent) ?
+            <Bubble isUser={this.state.isUser} message={this.state.message} isFirst={this.state.isFirst} showAvatar={this.state.showAvatar}/>
+            :
+            this.state.messageComponent;
+        const components = [<div className={styles.avatar}>{this.state.avatarComponent}</div>, messageComponent, this.state.extraComponent];
         if(!this.state.showAvatar) {
             components.shift();
         }
