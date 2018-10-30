@@ -9,8 +9,8 @@ class MessageContainer extends Component {
         let message = props.message ? props.message :"Your content goes here";
         let extra = props.extraComponent;
 
-        if (props.canEdit && !extra) {
-            extra = <div className={styles["edit-icon"]}> <Edit onClick={this.changeMessage.bind(this, "what?")}/> </div>;
+        if (props.canEdit) {
+            extra = <div key={2} className={styles["edit-icon"]}> <Edit onClick={this.changeMessage.bind(this, "what?")}/> </div>;
         }
 
         this.state = {
@@ -26,24 +26,14 @@ class MessageContainer extends Component {
             index: props.index
         };
 
-        this.state.messageComponent = props.messageComponent ? props.messageComponent : <Bubble isUser={props.isUser} message={this.state.message} isFirst={props.isFirst} showAvatar={props.showAvatar}/>;
-
     }
 
     static getDerivedStateFromProps(props, state) {
-        let newState = {};
-        if(props.message !== state.message) {
-            newState.message = props.message;
-            newState.messageComponent = <Bubble isUser={props.isUser} message={props.message} isFirst={props.isFirst} showAvatar={props.showAvatar}/>;
-
-            return newState;
-        }
-        return newState;
+        return props;
     }
 
     static defaultProps = {
         className: "",
-        extraComponent: null,
         avatarComponent: <img style={{height: "100%", width:"100%"}} src={"/favicon.ico"} alt={""}/>,
         showAvatar: true,
         isUser: true,
@@ -52,19 +42,24 @@ class MessageContainer extends Component {
         avatarHeight: "35px",
         avatarWidth: "35px",
         canEdit: false,
-        key: 0
     };
 
     changeMessage(newMsg) {
-        console.log(this.props.key);
         if(this.props.changeMessage) {
-            this.props.changeMessage(newMsg, this.state.key);
+            this.props.changeMessage(newMsg, this.state.index);
         }
     }
 
     render() {
+        let messageComponent;
 
-        const components = [<div className={styles.avatar}>{this.state.avatarComponent}</div>, this.state.messageComponent, this.state.extraComponent];
+        if(this.state.messageComponent != null) {
+            messageComponent = this.state.messageComponent;
+        } else {
+            messageComponent = <Bubble key={1} isUser={this.state.isUser} message={this.state.message} isFirst={this.state.isFirst} showAvatar={this.state.showAvatar}/>;
+        }
+
+        const components = [<div key={0} className={styles.avatar}>{this.state.avatarComponent}</div>, messageComponent, this.state.extraComponent];
         if(!this.state.showAvatar) {
             components.shift();
         }
@@ -73,7 +68,7 @@ class MessageContainer extends Component {
         }
         return(
             <div className={this.state.containerClassName +" "+ this.state.firstContainerClassName + " " + this.state.customContainerClass}>
-                {components.filter(Boolean)}
+                {components}
             </div>
         )
     }

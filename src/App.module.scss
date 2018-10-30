@@ -3,11 +3,11 @@
 .alert-div {
   text-align: start;
   elevation: above;
-  width: 100%;
+  width: 50rem;
   padding: 5px;
   margin: 1rem;
   border-radius: 3px;
-  @extend .shadow-1;
+  //@extend .shadow-1;
 
   background-color: lighten($window-default, 15%);
   border-color: lighten($window-default, 10%);
@@ -28,9 +28,30 @@
 
 .alert-div-warning {
   composes: alert-div;
-  background-color: lighten($warning, 15%);
-  border-color: lighten($warning, 10%);
-  color: darken($warning, 15%);
+  background-color: white;
+  border: 1px solid darken($warning, 0%);
+  color: rgba($blackish, 0.7);
+  position: fixed;
+  top: -50%;
+  left: 50%;
+  margin-left: -25rem;
+  display: flex;
+  align-items: center;
+}
+
+.show {
+  -webkit-animation: show 0.5s forwards;
+  -webkit-animation-delay: 0.5s;
+  animation: show 0.5s forwards;
+  animation-delay: 500ms;
+}
+
+@-webkit-keyframes show {
+  100% { top: 10rem; }
+}
+
+@keyframes show {
+  100% { top: 10rem; }
 }
 
 .alert-div-info {
