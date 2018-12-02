@@ -14,7 +14,7 @@ class App extends Component {
         super(props);
 
         this.state = {
-            msgQueue: [{message:<p>Can we go to the park? Can we, can we, can we.... PUHLEEEHi Aiva Here, I am so in love with yousef! He is my knight in shining armor. I wish he would love me back</p>, isUser:false, isFirst:true}],
+            msgQueue: [{message:<p>Hi Aiva Here, I am so in love with yousef! He is my knight in shining armor. I wish he would love me back</p>, isUser:false, isFirst:true}],
             msgMap: new Map(),
             stepCounter: 0,
             parent: null,

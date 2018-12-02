@@ -70,12 +70,14 @@ class ChatFooter extends Component {
 
         return(
             <div className={styles["footer-div"]}>
-                <span style={{height: "40px", width: "40px"}}>
+                <span className={"tooltip-container"} style={{height: "40px", width: "40px"}}>
                     <img onClick={this.previousNode} src={undo} className={styles.ripple}/>
+                    <span className={"tooltip-right"}>Previous Interaction</span>
                 </span>
                 {toAdd}
-                <span style={{height: "40px", width: "40px"}}>
+                <span className={"tooltip-container"} style={{height: "40px", width: "40px"}}>
                     <img onClick={this.send} src={send} className={styles.ripple}/>
+                    <span className={"tooltip-left"}>Send Message</span>
                 </span>
             </div>
         )
