@@ -10,7 +10,7 @@ class MessageContainer extends Component {
         let extra = props.extraComponent;
 
         if (props.canEdit) {
-            extra = <div key={2} className={styles["edit-icon"]}> <Edit onClick={this.changeMessage.bind(this, "what?")}/> </div>;
+            extra = <div key={2} className={styles["edit-icon"] + " tooltip-container"}> <Edit onClick={this.changeMessage.bind(this, "what?")}/> <span className={"tooltip-left"}>Edit</span> </div>;
         }
 
         this.state = {
