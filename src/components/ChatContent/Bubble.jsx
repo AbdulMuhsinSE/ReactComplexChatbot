@@ -39,6 +39,7 @@ class Bubble extends Component {
             chatContentStyle: (isUser) ? props.userContentStyle : props.botContentStyle,
             margin: props.isFirst ? firstMargin : calculatedMargin,
             bubbleClass: (isUser) ? styles.userBubble : styles.botBubble,
+            userContentClass: props.userContentClass,
             addedClass: addedClass
         }
     }
@@ -54,8 +55,12 @@ class Bubble extends Component {
     };
 
     static getDerivedStateFromProps(props, state) {
+        console.log(props);
         if(props.message && (state.message !== props.message)) {
-            return {message: props.message}
+            return {message: props.message, userContentClass: props.userContentClass}
+        }
+        if (props.userContentClass !== state.userContentClass) {
+            return {userContentClass : props.userContentClass}
         }
         return {};
     }
@@ -63,7 +68,7 @@ class Bubble extends Component {
 
     render() {
         return (
-          <div className={this.state.bubbleClass +" "+  this.state.addedClass} style={this.state.chatBubbleStyle}>
+          <div className={this.state.bubbleClass +" "+  this.state.addedClass + " " + this.state.userContentClass} style={this.state.chatBubbleStyle}>
               {this.state.message}
           </div>
         );
